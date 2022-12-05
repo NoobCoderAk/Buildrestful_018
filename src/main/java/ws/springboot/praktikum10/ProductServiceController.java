@@ -23,8 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ProductServiceController {
+    
+    //method untuk menyimpan product
     private static Map<String, Product> productRepo = new HashMap<>();
     static{
+        
+        //membuat product
         Product honey = new Product();
         honey.setId("1");
         honey.setName("Honey");
@@ -36,10 +40,17 @@ public class ProductServiceController {
         productRepo.put(almond.getId(), almond);
     }
     
+    //menambahkan product
     @RequestMapping(value = "/products", method = RequestMethod.POST)
     public ResponseEntity<Object> createProduct(@RequestBody Product product){
-        productRepo.put(product.getId(), product);
-        return new ResponseEntity<>("Product is created successfully", HttpStatus.CREATED);
+        //jika product id telah ada, maka display "product is already exist"
+        if(productRepo.containsKey(product.getId())){
+            return new ResponseEntity<>("product is already exist !", HttpStatus.CONFLICT);
+        }else{ //kondisi lain Maka Display : "Product is created successfully"
+            productRepo.put(product.getId(), product);
+            return new ResponseEntity<>("Product is created successfully", HttpStatus.CREATED);
+        }
+        
         
     }
     
