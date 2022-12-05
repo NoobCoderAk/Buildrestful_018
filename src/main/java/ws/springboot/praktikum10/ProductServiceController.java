@@ -59,15 +59,21 @@ public class ProductServiceController {
         if(!productRepo.containsKey(id)){
             return new ResponseEntity<>("product not found !", HttpStatus.NOT_FOUND);
         }else{//kondisi lain Maka Display :
+            //remove product
             productRepo.remove(id);
+            
+            //replace dengnan product baru
             product.setId(id);
             productRepo.put(id, product);
+            
+            //display
             return new ResponseEntity<>("Product is updated successfully", HttpStatus.OK);
         }
     }
     //method untuk display product
     @RequestMapping(value="/products")
     public ResponseEntity<Object> getProduct(@RequestParam(value = "name", required = false, defaultValue="honey") String name){
+        //diplay product
         return new ResponseEntity<>(productRepo.values(), HttpStatus.OK);
     }
     
@@ -78,6 +84,7 @@ public class ProductServiceController {
         if(!productRepo.containsKey(id)){
             return new ResponseEntity<>("product not found !", HttpStatus.NOT_FOUND);
         }else{//kondisi lain Maka Display :
+            //remove product
             productRepo.remove(id);
             return new ResponseEntity<>("Product is deleted successfully", HttpStatus.OK);
         }
