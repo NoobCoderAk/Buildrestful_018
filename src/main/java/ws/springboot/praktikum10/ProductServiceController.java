@@ -40,7 +40,7 @@ public class ProductServiceController {
         productRepo.put(almond.getId(), almond);
     }
     
-    //menambahkan product
+    //method untuk menambahkan product
     @RequestMapping(value = "/products", method = RequestMethod.POST)
     public ResponseEntity<Object> createProduct(@RequestBody Product product){
         //jika product id telah ada, maka display "product is already exist"
@@ -50,24 +50,28 @@ public class ProductServiceController {
             productRepo.put(product.getId(), product);
             return new ResponseEntity<>("Product is created successfully", HttpStatus.CREATED);
         }
-        
-        
     }
     
+    //method untuk mengedit product
     @RequestMapping(value = "/products/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Object> updateProduct(@PathVariable("id")String id, @RequestBody Product product){
-        productRepo.remove(id);
-        product.setId(id);
-        productRepo.put(id,product);
-        return new ResponseEntity<>("Product is updated successfully",HttpStatus.OK);
-    
+        //jika id tidak ada maka display:
+        if(!productRepo.containsKey(id)){
+            return new ResponseEntity<>("product not found !", HttpStatus.NOT_FOUND);
+        }else{//kondisi lain Maka Display :
+            productRepo.remove(id);
+            product.setId(id);
+            productRepo.put(id, product);
+            return new ResponseEntity<>("Product is updated successfully", HttpStatus.OK);
+        }
     }
-    
+    //method untuk display product
     @RequestMapping(value="/products")
     public ResponseEntity<Object> getProduct(@RequestParam(value = "name", required = false, defaultValue="honey") String name){
         return new ResponseEntity<>(productRepo.values(), HttpStatus.OK);
     }
     
+    //method untuk menghapus product
     @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> delete(@PathVariable("id")String id){
         productRepo.remove(id);
