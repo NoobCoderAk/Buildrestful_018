@@ -32,11 +32,18 @@ public class ProductServiceController {
         Product honey = new Product();
         honey.setId("1");
         honey.setName("Honey");
+        honey.setPrice(35000.0);
+        honey.setDiskon(15);
         productRepo.put(honey.getId(),honey);
+        
+        honey.setTotal(honey.getPrice(),honey.getDiskon());
         
         Product almond = new Product();
         almond.setId("2");
         almond.setName("Almond");
+        almond.setPrice(25000.0);
+        almond.setDiskon(25);
+        almond.setTotal(almond.getPrice(),almond.getDiskon());
         productRepo.put(almond.getId(), almond);
     }
     
@@ -47,6 +54,7 @@ public class ProductServiceController {
         if(productRepo.containsKey(product.getId())){
             return new ResponseEntity<>("product is already exist !", HttpStatus.CONFLICT);
         }else{ //kondisi lain Maka Display : "Product is created successfully"
+            product.setTotal(product.getPrice(), product.getDiskon());
             productRepo.put(product.getId(), product);
             return new ResponseEntity<>("Product is created successfully", HttpStatus.CREATED);
         }
@@ -64,6 +72,7 @@ public class ProductServiceController {
             
             //replace dengnan product baru
             product.setId(id);
+            product.setTotal(product.getPrice(), product.getDiskon());
             productRepo.put(id, product);
             
             //display
