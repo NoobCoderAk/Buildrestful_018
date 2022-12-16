@@ -34,16 +34,16 @@ public class ProductServiceController {
         honey.setName("Honey");
         honey.setPrice(35000.0);
         honey.setDiskon(15);
+        honey.setTotal(honey.getPrice()-(honey.getPrice()*honey.getDiskon())/100);
         productRepo.put(honey.getId(),honey);
         
-        honey.setTotal(honey.getPrice(),honey.getDiskon());
         
         Product almond = new Product();
         almond.setId("2");
         almond.setName("Almond");
         almond.setPrice(25000.0);
         almond.setDiskon(25);
-        almond.setTotal(almond.getPrice(),almond.getDiskon());
+        almond.setTotal(honey.getPrice()-(honey.getPrice()*honey.getDiskon())/100);
         productRepo.put(almond.getId(), almond);
     }
     
@@ -54,7 +54,7 @@ public class ProductServiceController {
         if(productRepo.containsKey(product.getId())){
             return new ResponseEntity<>("product is already exist !", HttpStatus.CONFLICT);
         }else{ //kondisi lain Maka Display : "Product is created successfully"
-            product.setTotal(product.getPrice(), product.getDiskon());
+            product.setTotal(product.getPrice()-(product.getPrice()*product.getDiskon())/100);
             productRepo.put(product.getId(), product);
             return new ResponseEntity<>("Product is created successfully", HttpStatus.CREATED);
         }
@@ -72,7 +72,7 @@ public class ProductServiceController {
             
             //replace dengnan product baru
             product.setId(id);
-            product.setTotal(product.getPrice(), product.getDiskon());
+            product.setTotal(product.getPrice()-(product.getPrice()*product.getDiskon())/100);
             productRepo.put(id, product);
             
             //display
